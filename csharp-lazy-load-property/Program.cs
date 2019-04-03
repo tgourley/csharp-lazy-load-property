@@ -25,12 +25,32 @@ namespace csharp_lazy_load_property
                 
                 foreach (var city in cityService.Find())
                 {
+                    Console.WriteLine("Initial pull of model.");
                     Console.WriteLine($"Id: {city.Id} JsonData: {city.JsonData} JsonDataDictionary is null? {city._JsonDataDictionary == null}");
 
-                    //pull value from dictionary - triggers lazy loading
-                    Console.WriteLine($"Id: {city.Id} City: {city.JsonDataDictionary["Name"]}");
+                    Console.WriteLine("Pull value from dictionary - triggers lazy loading.");
+                    Console.WriteLine($"Id: {city.Id} City: {city.JsonDataDictionary["Name"]} Population: {city.JsonDataDictionary["Population"]}");
 
+                    Console.WriteLine("Re-check model.");
                     Console.WriteLine($"Id: {city.Id} JsonData: {city.JsonData} JsonDataDictionary is null? {city._JsonDataDictionary == null}");
+
+                    Console.WriteLine("Change the JsonData value.");
+                    switch (city.JsonDataDictionary["Name"])
+                    {
+                        case "Indianapolis":
+                            city.JsonData = "{\"Name\": \"Indianapolis\", \"Population\": 2222}";
+                            break;
+                        case "Chicago":
+                            city.JsonData = "{\"Name\": \"Chicago\", \"Population\": 8888}";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Console.WriteLine("Re-pull value from dictionary - updates because JsonData changed.");
+                    Console.WriteLine($"Id: {city.Id} City: {city.JsonDataDictionary["Name"]} Population: {city.JsonDataDictionary["Population"]}");
+
+                    Console.WriteLine("");
                 }
             }
         }
@@ -40,7 +60,7 @@ namespace csharp_lazy_load_property
             var city1 = new City
             {
                 Id = 1,
-                JsonData = "{\"Name\": \"Indianapolis\", \"Population\": 123456}"
+                JsonData = "{\"Name\": \"Indianapolis\", \"Population\": 1111}"
             };
 
             context.Cities.Add(city1);
@@ -48,7 +68,7 @@ namespace csharp_lazy_load_property
             var city2 = new City
             {
                 Id = 2,
-                JsonData = "{\"Name\": \"Chicago\", \"Population\": 987654}"
+                JsonData = "{\"Name\": \"Chicago\", \"Population\": 9999}"
             };
 
             context.Cities.Add(city2);
