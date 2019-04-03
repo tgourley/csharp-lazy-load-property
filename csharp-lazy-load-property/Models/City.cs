@@ -27,7 +27,7 @@ namespace csharp_lazy_load_property.Models
             }
         }
 
-        private Dictionary<string, string> _JsonDataDictionary;
+        public Dictionary<string, string> _JsonDataDictionary;
 
         [NotMapped]
         public Dictionary<string, string> JsonDataDictionary

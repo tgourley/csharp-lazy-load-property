@@ -3,6 +3,8 @@ using csharp_lazy_load_property.Models;
 using csharp_lazy_load_property.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace csharp_lazy_load_property
 {
@@ -23,7 +25,12 @@ namespace csharp_lazy_load_property
                 
                 foreach (var city in cityService.Find())
                 {
-                    Console.WriteLine($"Id: {city.Id} JsonData: {city.JsonData}");
+                    Console.WriteLine($"Id: {city.Id} JsonData: {city.JsonData} JsonDataDictionary is null? {city._JsonDataDictionary == null}");
+
+                    //pull value from dictionary - triggers lazy loading
+                    Console.WriteLine($"Id: {city.Id} City: {city.JsonDataDictionary["Name"]}");
+
+                    Console.WriteLine($"Id: {city.Id} JsonData: {city.JsonData} JsonDataDictionary is null? {city._JsonDataDictionary == null}");
                 }
             }
         }
